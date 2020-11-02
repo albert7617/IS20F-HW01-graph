@@ -1,0 +1,245 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<title>Document</title>
+	<style>
+		.aes_cbc_en {
+		  stroke: #1f77b4;
+      fill: #1f77b4;
+		}
+
+		.aes_cbc_de {
+		  stroke: #aec7e8;
+      fill: #aec7e8;
+		}
+
+		.aes_ocb_en {
+		  stroke: #ff7f0e;
+      fill: #ff7f0e;
+		}
+
+		.aes_ocb_de {
+		  stroke: #ffbb78;
+      fill: #ffbb78;
+		}
+
+		.aes_gcm_en {
+		  stroke: #2ca02c;
+      fill: #2ca02c;
+		}
+
+		.aes_gcm_de {
+		  stroke: #98df8a;
+      fill: #98df8a;
+		}
+
+		.aes_ccm_en {
+		  stroke: #d62728;
+      fill: #d62728;
+		}
+
+		.aes_ccm_de {
+		  stroke: #ff9896;
+      fill: #ff9896;
+		}
+
+		.sha256 {
+		  stroke: #9467bd;
+      fill: #9467bd;
+		}
+
+		.chacha20_en {
+		  stroke: #636363;
+      fill: #636363;
+		}
+
+		.chacha20_de {
+		  stroke: #969696;
+      fill: #969696;
+		}
+
+		.chacha20_poly1305_en {
+		  stroke: #31a354;
+      fill: #31a354;
+		}
+
+		.chacha20_poly1305_de {
+		  stroke: #74c476;
+      fill: #74c476;
+		}
+
+		.poly1305_en {
+		  stroke: #756bb1;
+      fill: #756bb1;
+		}
+
+		.poly1305_ve {
+		  stroke: #9e9ac8;
+      fill: #9e9ac8;
+		}
+
+		.rsa_1024_en {
+		  stroke: #7b4173;
+      fill: #7b4173;
+		}
+
+		.rsa_1024_de {
+		  stroke: #a55194;
+      fill: #a55194;
+		}
+
+		.rsa_2048_en {
+		  stroke: #8c6d31;
+      fill: #8c6d31;
+		}
+
+		.rsa_2048_de {
+		  stroke: #bd9e39;
+      fill: #bd9e39;
+		}
+
+		.connection {
+			fill: none;
+		}
+
+    .legend-box {
+      cursor: pointer;
+    }
+	</style>	
+</head>
+<body>
+  <div>
+    <h1>Information security assignment one interactive chart</h1>
+    <h2>Click legend to toggle visibility, hover on data point to view detail time.</h2>
+  </div>
+	<div id="plot"></div>
+	<div id="plot-rsa"></div>
+</body>
+<script>
+	const time = [{"data_size": 7, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0010004043579101562, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0}, {"data_size": 40960007, "aes_cbc_en": 0.08299899101257324, "aes_cbc_de": 0.07301616668701172, "aes_ocb_en": 0.16303658485412598, "aes_ocb_de": 0.1600360870361328, "aes_gcm_en": 0.06501650810241699, "aes_gcm_de": 0.06701302528381348, "aes_ccm_en": 0.14003396034240723, "aes_ccm_de": 0.1380298137664795, "sha256": 0.1500399112701416, "chacha20_en": 0.09703350067138672, "chacha20_de": 0.09500908851623535, "chacha20_poly1305_en": 0.14701390266418457, "chacha20_poly1305_de": 0.13905000686645508, "poly1305_en": 0.04301047325134277, "poly1305_ve": 0.043009042739868164}, {"data_size": 81920007, "aes_cbc_en": 0.16603612899780273, "aes_cbc_de": 0.14803552627563477, "aes_ocb_en": 0.3070683479309082, "aes_ocb_de": 0.3130686283111572, "aes_gcm_en": 0.13002872467041016, "aes_gcm_de": 0.1380312442779541, "aes_ccm_en": 0.2720613479614258, "aes_ccm_de": 0.2900838851928711, "sha256": 0.30005550384521484, "chacha20_en": 0.19704055786132812, "chacha20_de": 0.20004487037658691, "chacha20_poly1305_en": 0.2850828170776367, "chacha20_poly1305_de": 0.27906227111816406, "poly1305_en": 0.08400630950927734, "poly1305_ve": 0.09002232551574707}, {"data_size": 122880007, "aes_cbc_en": 0.25905871391296387, "aes_cbc_de": 0.23306536674499512, "aes_ocb_en": 0.47109127044677734, "aes_ocb_de": 0.5031130313873291, "aes_gcm_en": 0.1960310935974121, "aes_gcm_de": 0.2050638198852539, "aes_ccm_en": 0.4281005859375, "aes_ccm_de": 0.45608973503112793, "sha256": 0.46210741996765137, "chacha20_en": 0.3020637035369873, "chacha20_de": 0.29706597328186035, "chacha20_poly1305_en": 0.4360966682434082, "chacha20_poly1305_de": 0.4340989589691162, "poly1305_en": 0.13202977180480957, "poly1305_ve": 0.12802839279174805}, {"data_size": 163840007, "aes_cbc_en": 0.3470780849456787, "aes_cbc_de": 0.29306507110595703, "aes_ocb_en": 0.6111571788787842, "aes_ocb_de": 0.6281208992004395, "aes_gcm_en": 0.2580573558807373, "aes_gcm_de": 0.2580580711364746, "aes_ccm_en": 0.5371201038360596, "aes_ccm_de": 0.5461220741271973, "sha256": 0.6011335849761963, "chacha20_en": 0.3810856342315674, "chacha20_de": 0.38208508491516113, "chacha20_poly1305_en": 0.5511233806610107, "chacha20_poly1305_de": 0.5511236190795898, "poly1305_en": 0.17503952980041504, "poly1305_ve": 0.17605304718017578}, {"data_size": 204800007, "aes_cbc_en": 0.41111040115356445, "aes_cbc_de": 0.36907029151916504, "aes_ocb_en": 0.7681887149810791, "aes_ocb_de": 0.7801742553710938, "aes_gcm_en": 0.3210718631744385, "aes_gcm_de": 0.3230719566345215, "aes_ccm_en": 0.682152509689331, "aes_ccm_de": 0.6741981506347656, "sha256": 0.7511684894561768, "chacha20_en": 0.4821016788482666, "chacha20_de": 0.4791133403778076, "chacha20_poly1305_en": 0.6921546459197998, "chacha20_poly1305_de": 0.6831405162811279, "poly1305_en": 0.22205018997192383, "poly1305_ve": 0.21104717254638672}, {"data_size": 245760007, "aes_cbc_en": 0.4971048831939697, "aes_cbc_de": 0.44008564949035645, "aes_ocb_en": 0.9162216186523438, "aes_ocb_de": 0.9402108192443848, "aes_gcm_en": 0.3820977210998535, "aes_gcm_de": 0.4160804748535156, "aes_ccm_en": 0.811180591583252, "aes_ccm_de": 0.8161823749542236, "sha256": 0.9032018184661865, "chacha20_en": 0.5741221904754639, "chacha20_de": 0.5821363925933838, "chacha20_poly1305_en": 0.8351805210113525, "chacha20_poly1305_de": 0.8291864395141602, "poly1305_en": 0.26206254959106445, "poly1305_ve": 0.2530555725097656}, {"data_size": 286720007, "aes_cbc_en": 0.5931203365325928, "aes_cbc_de": 0.5081262588500977, "aes_ocb_en": 1.0712392330169678, "aes_ocb_de": 1.095245361328125, "aes_gcm_en": 0.453106164932251, "aes_gcm_de": 0.4491128921508789, "aes_ccm_en": 0.945199728012085, "aes_ccm_de": 0.9612143039703369, "sha256": 1.0502471923828125, "chacha20_en": 0.6651363372802734, "chacha20_de": 0.6661417484283447, "chacha20_poly1305_en": 0.9832203388214111, "chacha20_poly1305_de": 0.9682168960571289, "poly1305_en": 0.3090686798095703, "poly1305_ve": 0.3000662326812744}, {"data_size": 327680007, "aes_cbc_en": 0.6581413745880127, "aes_cbc_de": 0.5961387157440186, "aes_ocb_en": 1.2152721881866455, "aes_ocb_de": 1.25626540184021, "aes_gcm_en": 0.5361347198486328, "aes_gcm_de": 0.5141146183013916, "aes_ccm_en": 1.084242582321167, "aes_ccm_de": 1.0852429866790771, "sha256": 1.2052547931671143, "chacha20_en": 0.7651724815368652, "chacha20_de": 0.7671711444854736, "chacha20_poly1305_en": 1.1182639598846436, "chacha20_poly1305_de": 1.1202366352081299, "poly1305_en": 0.354079008102417, "poly1305_ve": 0.3410763740539551}, {"data_size": 368640007, "aes_cbc_en": 0.7461671829223633, "aes_cbc_de": 0.6581470966339111, "aes_ocb_en": 1.375307559967041, "aes_ocb_de": 1.4253206253051758, "aes_gcm_en": 0.5891306400299072, "aes_gcm_de": 0.5781428813934326, "aes_ccm_en": 1.213271141052246, "aes_ccm_de": 1.2272608280181885, "sha256": 1.3523011207580566, "chacha20_en": 0.8592078685760498, "chacha20_de": 0.8581974506378174, "chacha20_poly1305_en": 1.234259843826294, "chacha20_poly1305_de": 1.2552759647369385, "poly1305_en": 0.3810844421386719, "poly1305_ve": 0.3941028118133545}];
+	const timeRSA = [{"data_size": 7, "aes_cbc_en": 0.0010001659393310547, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0010001659393310547, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.001994609832763672, "rsa_2048_en": 0.0, "rsa_2048_de": 0.003982067108154297}, {"data_size": 23, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0009999275207519531, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0009999275207519531, "rsa_2048_en": 0.0009949207305908203, "rsa_2048_de": 0.004006385803222656}, {"data_size": 39, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010094642639160156, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0009989738464355469, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0009992122650146484, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.004000186920166016}, {"data_size": 55, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0010018348693847656, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0020003318786621094, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.00400090217590332}, {"data_size": 71, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0019996166229248047, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.004001140594482422}, {"data_size": 87, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010001659393310547, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0010006427764892578, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0, "rsa_2048_de": 0.0040013790130615234}, {"data_size": 103, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010089874267578125, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.00099945068359375, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0010004043579101562, "rsa_2048_de": 0.004000663757324219}, {"data_size": 119, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0010001659393310547, "rsa_2048_de": 0.004007101058959961}, {"data_size": 135, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.001008749008178711, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0010001659393310547, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0, "rsa_2048_de": 0.004001140594482422}, {"data_size": 151, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0010046958923339844, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0009992122650146484, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0010001659393310547, "rsa_2048_de": 0.00400090217590332}, {"data_size": 167, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0009813308715820312, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.000993967056274414, "rsa_2048_de": 0.003993034362792969}, {"data_size": 183, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0010004043579101562, "rsa_2048_de": 0.00400090217590332}, {"data_size": 199, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_2048_en": 0.0010006427764892578, "rsa_2048_de": 0.004001140594482422}];
+  // const timeRSA = [{"data_size": 7, "aes_cbc_en": 0.0010001659393310547, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0010001659393310547, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.001994609832763672, "rsa_2048_en": 0.0, "rsa_2048_de": 0.003982067108154297}, {"data_size": 23, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0009999275207519531, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0009999275207519531, "rsa_2048_en": 0.0009949207305908203, "rsa_2048_de": 0.004006385803222656}, {"data_size": 39, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010094642639160156, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0009989738464355469, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0009992122650146484, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.004000186920166016}, {"data_size": 55, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0010018348693847656, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0020003318786621094, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.00400090217590332}, {"data_size": 71, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": 0.0, "rsa_1024_de": 0.0019996166229248047, "rsa_2048_en": 0.0009999275207519531, "rsa_2048_de": 0.004001140594482422}, {"data_size": 87, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010001659393310547, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0010006427764892578, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0, "rsa_2048_de": 0.0040013790130615234}, {"data_size": 103, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0010089874267578125, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.00099945068359375, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0010004043579101562, "rsa_2048_de": 0.004000663757324219}, {"data_size": 119, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0010001659393310547, "rsa_2048_de": 0.004007101058959961}, {"data_size": 135, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.001008749008178711, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0010001659393310547, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0, "rsa_2048_de": 0.004001140594482422}, {"data_size": 151, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0010046958923339844, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0009992122650146484, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0010001659393310547, "rsa_2048_de": 0.00400090217590332}, {"data_size": 167, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0009813308715820312, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.000993967056274414, "rsa_2048_de": 0.003993034362792969}, {"data_size": 183, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0010004043579101562, "rsa_2048_de": 0.00400090217590332}, {"data_size": 199, "aes_cbc_en": 0.0, "aes_cbc_de": 0.0, "aes_ocb_en": 0.0, "aes_ocb_de": 0.0, "aes_gcm_en": 0.0, "aes_gcm_de": 0.0, "aes_ccm_en": 0.0, "aes_ccm_de": 0.0, "sha256": 0.0, "chacha20_en": 0.0, "chacha20_de": 0.0, "chacha20_poly1305_en": 0.0, "chacha20_poly1305_de": 0.0, "poly1305_en": 0.0, "poly1305_ve": 0.0, "rsa_1024_en": "NaN", "rsa_1024_de": "NaN", "rsa_2048_en": 0.0010006427764892578, "rsa_2048_de": 0.004001140594482422}];
+
+	const render = (target, data) => {
+		// set the dimensions and margins of the graph
+		const margin = {top: 10, right: 30, bottom: 30, left: 60},
+		    width = 1700 - margin.left - margin.right,
+		    height = 800 - margin.top - margin.bottom;
+		// append the svg object to the body of the page
+		const svg = d3.select(target)
+		  .append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		const legendBox = svg.append('g').attr('transform', 'translate(1200, 100)');
+    const graphContainer = svg.append('svg').attr('width', '1200')
+      .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");;
+    const graphWidth = 1200 - margin.left - margin.right;
+		const dataSize = data.map(e=>e.data_size);
+		const time = {};
+		for(var key in data[0]) {
+			if(key != 'data_size') {
+				time[key] = data.map((e, i)=>{return {size: dataSize[i], time: e[key]}});
+			}
+		}
+		const maxDataSize = d3.max(dataSize, d=>d);
+		
+    const maxTime = d3.max(data, function(d) {
+    	var m = 0.0;
+    	for (const [key, value] of Object.entries(d)) {
+			  if(key != 'data_size' && value > m) {
+			  	m = value;
+			  }
+			}
+			return m;
+    });
+
+
+		// Add X axis
+		const x = d3.scaleLinear().domain([0, maxDataSize]).range([0, graphWidth]);
+    graphContainer.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    const y = d3.scaleLinear()
+      .domain([0, maxTime])
+      .range([height, 0]);
+    graphContainer.append("g")
+      .call(d3.axisLeft(y));
+    const makeConnection = (key) => {
+    	return d3.line()(time[key].map(e => [x(e.size), y(e.time)]))
+    };
+    
+    graphContainer.selectAll('connection')
+    	.data(Object.keys(time)).enter()
+    	.append('path')
+    		.attr('d', makeConnection)
+    		.attr('fill', 'none')
+    		.attr('class', d => d+' connection')
+
+    for (var key in time) {
+			graphContainer.selectAll('point-'+key)
+	    	.data(time[key]).enter()
+	    	.append('circle')
+	    		.attr("cx", d => x(d.size))
+	        .attr("cy", d => y(d.time))
+          .attr('style', d => d.time == undefined ? 'fill: none !important;stroke: none !important;' : '')
+	        .attr("r", 5)
+	        .attr("class", `${key} dot`)
+          .on('mouseover', (e, d) => {
+            if(d.time != undefined) {
+              // Show tooltip
+              var tooltipWidth = 200;
+              var tooltipHeight = 20;
+              var tooltipX = parseFloat(e.target.getAttribute('cx')) - 70;
+              var tooltipY = parseFloat(e.target.getAttribute('cy')) + 5;
+              graphContainer.append('rect')
+                .attr('fill', 'black')
+                .attr('width', tooltipWidth)
+                .attr('height', '20')
+                .attr('class', 'tooltip')
+                .attr('transform', `translate(${tooltipX} ${tooltipY})`);
+              graphContainer.append('text')
+                .text(d.time+' sec')
+                .attr('fill', 'white')
+                .attr('class', 'tooltip')
+                .attr('transform', `translate(${tooltipX+5} ${tooltipY+16})`);
+            }
+          })
+          .on('mouseout', d => graphContainer.selectAll('.tooltip').remove())
+    }
+
+    legendBox.selectAll('legend')
+      .data(Object.keys(time)).enter()
+      .append('g')
+      .attr('class', 'legend-box')
+      .attr('toggle', 'on')
+      .attr('transform', (d,i) => `translate(10, ${i*20})`)
+      .attr('id', d => `legend-${d}`)
+      .each((d, i) => {
+        legendBox.select(`#legend-${d}`).append('circle').attr('r', 6).attr('class', d => d).attr('transform', 'translate(-10, -4)');
+        legendBox.select(`#legend-${d}`).append('text').text(d => d).attr('class', d => d);
+      })
+      .on('click', (e, d) => {
+        if(legendBox.select(`#legend-${d}`).attr('toggle') == 'on') {
+          legendBox.select(`#legend-${d}`).attr('toggle', 'off');
+          legendBox.select(`#legend-${d}`).append('circle').attr('r', 4).attr('class', 'white-dot').attr('fill', 'white').attr('transform', 'translate(-10, -4)');
+          d3.selectAll(`${target} .${d}.dot, ${target} .${d}.connection`).transition().duration(900).style('visibility', 'hidden');
+        } else {
+          legendBox.select(`#legend-${d}`).attr('toggle', 'on');
+          legendBox.select(`#legend-${d} .white-dot`).remove();
+          d3.selectAll(`${target} .${d}.dot, ${target} .${d}.connection`).transition().duration(900).style('visibility', 'visible');
+        }
+      });
+	}
+
+	render('#plot', time);
+	render('#plot-rsa', timeRSA);
+
+	
+</script>
+</html>
