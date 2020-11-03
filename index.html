@@ -166,19 +166,19 @@
 	const render = (target, data) => {
 		// set the dimensions and margins of the graph
 		const margin = {top: 10, right: 30, bottom: 30, left: 60},
-		    width = 1700 - margin.left - margin.right,
+		    width = 1900 - margin.left - margin.right,
 		    height = 800 - margin.top - margin.bottom;
 		// append the svg object to the body of the page
 		const svg = d3.select(target)
 		  .append("svg")
 		    .attr("width", width + margin.left + margin.right)
 		    .attr("height", height + margin.top + margin.bottom)
-		const legendBox = svg.append('g').attr('transform', 'translate(1200, 100)');
-    const graphContainer = svg.append('svg').attr('width', '1200')
+		const legendBox = svg.append('g').attr('transform', 'translate(1520, 100)');
+    const graphContainer = svg.append('svg').attr('width', '1520')
       .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");;
-    const graphWidth = 1200 - margin.left - margin.right;
+    const graphWidth = 1520 - margin.left - margin.right;
 		const dataSize = data.map(e=>e.data_size);
 		const time = {};
     
@@ -318,15 +318,16 @@
 
     // set the dimensions and margins of the graph
     const margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 1900 - margin.left - margin.right,
+        width = 1600 - margin.left - margin.right,
         height = 800 - margin.top - margin.bottom;
+    const graphContainerWidth = 1600;
     // append the svg object to the body of the page
     const svg = d3.select(target)
       .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
 
-    const legendBox = svg.append('g').attr('transform', 'translate(1200, 100)');
+    const legendBox = svg.append('g').attr('transform', 'translate(1380, 100)');
 
     // color palette = one color per subgroup
     const color = d3.scaleOrdinal()
@@ -348,11 +349,11 @@
 
     legends.append("text").text(d => d);
 
-    const graphContainer = svg.append('svg').attr('width', '1400')
+    const graphContainer = svg.append('svg').attr('width', graphContainerWidth)
       .append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");;
-    const graphWidth = 1400 - margin.left - margin.right;
+    const graphWidth = graphContainerWidth - margin.left - margin.right;
     
     const xScale = d3.scaleBand()
       .domain(groups)
